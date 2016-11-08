@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+form#multiphase{ border:#000 1px solid; padding: 24px; width:350px; }
+form#multiphase > #phase2, #phase3, #show_all_data{ display:none; }
+</style>
+<script>
+var fname, lname, gender;
+function _(x){
+	return document.getElementById(x);
+}
+function processPhase1(){
+	fname = _("firstname").value;
+	lname = _("lastname").value;
+	if(fname.length > 2 && lname.length > 2){
+		_("phase1").style.display = "none";
+		_("phase2").style.display = "block";
+		_("progressBar").value = 10;
+		_("status").innerHTML = "Phase 1 of 2";
+	} 
+	else 
+	{
+		alert("Please fill in the fields");
+	}
+}
+function processPhase2(){
+	gender = _("gender").value;
+	if(gender.length > 0) {
+		_("show_all_data").style.display = "block";
+		_("progressBar").value = 20;
+		_("status").innerHTML = "Phase 2 of 2";
+		_("display_fname").innerHTML = fname;
+		_("display_lname").innerHTML = lname;
+		_("display_gender").innerHTML = gender;
+	} 
+	else 
+	{
+		alert("Please select a gender");
+	}
+}
+function processPhase3(){
+if(document.getElementById('q1r1').checked) {
+	_("progressBar").value = 20
+	}
+	else {
+	alert ("Incorrect answer");
+	return false;
+	}
+}
+
+function submitForm(){
+	_("multiphase").method = "post";
+	_("multiphase").action = "my_parser.php";
+	_("multiphase").submit();
+
+}
+</script>
+</head>
+<body>
+<!-- Status Bar-->
+<progress id="progressBar" value="0" max="100" style="width:250px;"></progress>
+<h3 id="status"> Phase 0 of 2</h3>
+<form id="multiphase" onsubmit="return false">
+<!-- This is the first phase of the form-->
+	<div id="phase1">
+	First Name: <input id="firstname" name="firstname"><br>
+	Last Name: <input id="lastname" name="lastname"><br>
+	<button onclick="processPhase1()"> Next </button>
+	</div>
+<!-- This is the second phase of the form-->
+	<div id="phase2">
+	Gender: <select id="gender" name="gender">
+	<option value=""></option>
+	<option value="m">Male</option>
+	<option value="f">Female</option>
+	</select><br>
+	<button onclick="processPhase2()"> Next </button>
+	</div>
+<!-- This is the third phase of the form-->
+	<div id="phase3">
+			
+			<h3>Who is the founding director at Flowtech?</h3>
+			<ul>
+				<li><input type="radio" name="q1" id="q1r1" value="A" /> Mark Gilby</li>
+				<li><input type="radio" name="q1" id="q1r2" value="B" /> David Bartlett</li>
+				<li><input type="radio" name="q1" id="q1r3" value="C" /> Mark Jacobson</li>
+			</ul>
+			 
+	<button onclick="processPhase3()"> Next </button>
+	</div>
+	<!-- This phase returns the data-->
+	<div id="show_all_data">
+	First Name: <span id="display_fname"></span> <br>
+	Last Name: <span id="display_lname"></span> <br>
+	Gender: <span id="display_gender"></span> <br>
+	<button onclick="submitForm()"> Submit </button>
+	</div>
+
+ </body>
+</html>
+
+
